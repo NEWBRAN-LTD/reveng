@@ -135,7 +135,7 @@ you should see this
 `pnpm` link your local `module-a` to your `module-b`. Now several things to know. 
 
 * when you edit your file in your `module-a` and `module-b` will get it instancely, try it to change your `add` function see it happens
-* If you change the version of `@awesome-monorepo/module-a` then you need to know update the `module-b/package.json` accordingly 
+* If you change the version of `@awesome-monorepo/module-a` then you need to update the `module-b/package.json` accordingly 
 
 
 --- 
