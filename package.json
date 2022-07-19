@@ -1,0 +1,24 @@
+{
+  "name": "pnpm-monorepo-example",
+  "version": "1.0.0",
+  "description": "Using pnpm to manage your monorepo with ease",
+  "main": "index.js",
+  "scripts": {
+    "test": "nothing"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joel-chu/pnpm-monorepo-example.git"
+  },
+  "keywords": [
+    "pnpm",
+    "monorepo",
+    "yarn-is-a-piece-of-crap"
+  ],
+  "author": "Joel Chu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joel-chu/pnpm-monorepo-example/issues"
+  },
+  "homepage": "https://github.com/joel-chu/pnpm-monorepo-example#readme"
+}
