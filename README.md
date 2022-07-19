@@ -121,6 +121,23 @@ $ The result of 1 + 1 is 2
 
 Working nicely! 
 
+Now take a look at `packages/module-b/package.json` 
+you should see this 
+
+```json 
+{
+    "dependencies": {
+        "@pnpm-monorepo-example/module-a": "workspace:^1.0.0"
+    }
+}
+```
+
+`pnpm` link your local `module-a` to your `module-b`. Now several things to know. 
+
+* when you edit your file in your `module-a` and `module-b` will get it instancely, try it to change your `add` function see it happens
+* If you change the version of `@awesome-monorepo/module-a` then you need to know update the `module-b/package.json` accordingly 
+
+
 --- 
 
 ## Extra bit 
