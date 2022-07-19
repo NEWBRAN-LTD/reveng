@@ -87,9 +87,72 @@ shamefully-hoist=true
 
 This file help pnpm to understand your project is a monorepo 
 
+*I found the pnpm 7 doesn't require this anymore, but add it just on the safe side*
+
 5. Linking things together 
 
+Now on the root of your project
 
+```sh
+$ pnpm add @awesome-monorepo/module-a  --filter @awesome-monorepo/module-b 
+```
+
+What that means is, add `@awesome-monorepo/module-a` to `@awesome-monorepo/module-b` as depedencies. If you add `-D` it will add to the `devDependencies` 
+
+Now add a line to the package.json on the root of your project 
+
+```json 
+{
+    ...
+    scripts: {
+        'dev': 'node ./packages/module-b/index.js'
+    }
+    ...
+}
+```
+
+Try it 
+
+```sh
+$ pnpm dev 
+$ ... 
+$ The result of 1 + 1 is 2
+```
+
+Working nicely! 
+
+--- 
+
+## Extra bit 
+
+Now try to add a depedencies to the project root. 
+
+```sh
+$ pnpm add chalk@4.1.2 
+```
+
+Then change your `packages/module-b/index.js` file to this 
+
+```js
+const chalk = require('chalk')
+const add = require('@pnpm-monorepo-example/module-a')
+
+const result = add(1, 1)
+
+console.log(chalk.yellow(`The result of 1 + 1 is ${result}`))
+```
+
+Run `pnpm dev` again, and you should see the console output is now yellow (if its not then you need to cd into the folder and run it from there) 
+
+What you just did is add share depedencies across the project. This is very useful if your packages has a lot of same `devDependencies`. You only need to add them all to the root level, and each packages will just work. 
+
+--- 
+
+Joel Chu (c) 2022
+
+--- 
+
+pnpm is much better than this [piece of crap](https://yarnpkg.com/) 
 
 
 

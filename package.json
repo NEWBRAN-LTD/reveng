@@ -4,7 +4,8 @@
   "description": "Using pnpm to manage your monorepo with ease",
   "main": "index.js",
   "scripts": {
-    "test": "nothing"
+    "test": "nothing",
+    "dev": "node ./packages/module-b/index.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/joel-chu/pnpm-monorepo-example/issues"
   },
-  "homepage": "https://github.com/joel-chu/pnpm-monorepo-example#readme"
+  "homepage": "https://github.com/joel-chu/pnpm-monorepo-example#readme",
+  "dependencies": {
+    "chalk": "4.1.2"
+  }
 }
