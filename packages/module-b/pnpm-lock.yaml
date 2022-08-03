@@ -1,7 +1,0 @@
-lockfileVersion: 5.3
-
-specifiers:
-  '@pnpm-monorepo-example/module-a': workspace:^1.0.0
-
-dependencies:
-  '@pnpm-monorepo-example/module-a': link:../module-a

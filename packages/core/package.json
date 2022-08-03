@@ -1,0 +1,15 @@
+{
+  "name": "@reveng/core",
+  "version": "1.0.0",
+  "description": "Core for RevEng (AST parser)",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NEWBRAN-LTD/reveng.git"
+  },
+  "author": "Joel Chu <joelchu@foxmail.com>",
+  "license": "MIT"
+}

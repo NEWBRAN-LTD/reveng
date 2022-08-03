@@ -1,20 +1,24 @@
 {
-  "name": "pnpm-monorepo-example",
+  "name": "reveng",
   "version": "1.0.0",
-  "description": "Using pnpm to manage your monorepo with ease",
+  "description": "Reverse Engineering toolbox for JS / TS projects",
   "main": "index.js",
   "scripts": {
-    "test": "nothing",
-    "dev": "node ./packages/module-b/index.js"
+    "test": "ava"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/joel-chu/pnpm-monorepo-example.git"
+    "url": "git+https://github.com/NEWBRAN-LTD/reveng.git"
   },
   "keywords": [
+    "Reverse-Engineering",
     "pnpm",
     "monorepo",
-    "yarn-is-a-piece-of-crap"
+    "yarn-is-a-piece-of-crap",
+    "reverse",
+    "engineering",
+    "typescript",
+    "Javascript"
   ],
   "author": "Joel Chu",
   "license": "MIT",
@@ -23,6 +27,5 @@
   },
   "homepage": "https://github.com/joel-chu/pnpm-monorepo-example#readme",
   "dependencies": {
-    "chalk": "4.1.2"
   }
 }
