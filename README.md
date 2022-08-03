@@ -1,6 +1,6 @@
 # RevEng
 
-> Reverse Engineering toolbox
+> Reverse Engineering toolbox for Javascript / ts
 
 ---
 

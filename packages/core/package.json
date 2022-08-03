@@ -13,6 +13,7 @@
   "author": "Joel Chu <joelchu@foxmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@jsonql/ast": "^0.9.0"
+    "@jsonql/ast": "^0.9.0",
+    "fs-extra": "^10.1.0"
   }
 }
