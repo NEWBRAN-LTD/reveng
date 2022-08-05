@@ -1,0 +1,19 @@
+{
+  "name": "test-doc",
+  "version": "0.0.1",
+  "description": "Testing the docgen",
+  "main": "index.js",
+  "authors": {
+    "name": "Joel",
+    "email": "joelchu@foxmail.com"
+  },
+  "repository": "/test-doc",
+  "scripts": {
+    "dev": "vuepress dev src",
+    "build": "vuepress build src"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.5.3"
+  }
+}
