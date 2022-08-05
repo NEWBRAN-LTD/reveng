@@ -13,10 +13,10 @@ export function tracer (pathToFile: string, options = {}) {
 }
 
 /* the real mean here we need to trace the import and go to the next file */
-function extractImports (ast: Array<AnyType>): Array<AnyType> | boolean {
+export function extractImportsTree (ast: Array<AnyType>, store = {}): Array<AnyType> | boolean {
   const imports = ast.filter((a: AnyType) => a.type === 'ImportDeclaration')
   if (imports.length > 0) {
-
+    
   }
 
   return false
@@ -33,7 +33,7 @@ export async function getFullPathToImport (importPath: string): Promise<string> 
   if (ext) {
     return Promise.reject(`${_path} not found!`)
   }
-  // @TODO should we include the other extensions like cjs / mjs / js ? 
+  // @TODO should we include the other extensions like cjs / mjs / js ?
   return getFileStat([_path, 'ts'].join('.'))
 }
 
