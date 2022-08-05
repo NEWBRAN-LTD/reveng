@@ -17,7 +17,7 @@ test('Testing the getFullPathToImport', async t => {
   t.true(result2.indexOf(join('trace', 'lib.ts')) > -1)
 })
 
-test.skip('Should able to return an ast file', t => {
+test('Should able to return an ast file', t => {
   const ast = tracer(mainFile)
 
   console.dir(ast, { depth: null })
