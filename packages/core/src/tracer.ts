@@ -1,32 +1,10 @@
 // this will act like a bunlder to map out all the imports and each files
 // calls and parameters and how they related to each other for Reverse Engineers
-import type { AnyType } from '@jsonql/ast/index'
+import type { AnyType, SpecifiersNode } from '../'
 import { swcParserSync } from '@jsonql/ast/dist/parsers'
 import { isEmptyObj } from '@jsonql/utils/dist/empty'
 import fsx from 'fs-extra'
 import { resolve, join, extname } from 'node:path'
-
-/* take this to types.d.ts later */
-type SpanNode = {
-  start: number
-  end: number
-  ctxt: number
-}
-
-type SpecifierLocalNode = {
-  type: string
-  span: SpanNode
-  value: string
-  optional: boolean
-}
-
-type SpecifiersNode = {
-  type: string
-  span: SpanNode,
-  local: SpecifierLocalNode
-  imported?: AnyType
-  isTypeOnly: boolean
-}
 
 /* the main call to the swc */
 export function tracer (pathToFile: string, options = {}) {
@@ -49,7 +27,6 @@ function extractImportsPaths (ast: Array<AnyType>): Array<string> {
       // the type is always source: 'StringLiteral' anyway until we encounter otherwise
       return a.source.value
     })
-
   return [...new Set(imports)]
 }
 
@@ -71,7 +48,7 @@ function extractImportProps (ast: Array<AnyType>) {
 export function extractImportsTree (
   ast: Array<AnyType>,
   depth = 0, // id where we are and add result data to store
-  store = {} // store the whole journey
+  store = [] // store the whole journey in an flat array
 ): object {
   const imports = extractImportsPaths(ast)
   const props = extractImportProps(ast)
@@ -126,21 +103,17 @@ async function getFileStat (importPath: string): Promise<string> {
   })
 }
 
-
-
 /* we only want the body part */
 function extractBody (ast: AnyType) {
   if (ast.body) {
     return ast.body
-  }
+  } 
+  // What if they have this import export only but there should be a body
   throw new Error(`There is no body field in the ast!`)
 }
 
-
-
 /* fileToAst low level code to rip the input path file to AST */
 function pathToAst (pathToFile: string, options: AnyType) {
-
   const defaultTarget = { target: 'es2021' } // set a default target
 
   return swcParserSync(pathToFile, Object.assign(defaultTarget, options))

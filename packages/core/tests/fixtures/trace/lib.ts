@@ -1,6 +1,7 @@
 // lib just export some function
 
 import another from './another'
+import { formatStr } from '@jsonql/utils'
 
 export type Id = {
   id: number
