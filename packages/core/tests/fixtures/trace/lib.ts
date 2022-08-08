@@ -16,3 +16,7 @@ export function someFunc(id: number): Id {
 export function getId(payload: Id): number {
   return payload.id
 }
+
+export function funnyMsg (you: string) {
+  return formatStr('{0} are a idiot!', you)
+}

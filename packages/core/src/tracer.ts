@@ -19,7 +19,7 @@ function filterCallback (a: AnyType) {
 }
 
 /* we don't want duplicated import paths */
-function extractImportsPaths (ast: Array<AnyType>): Array<string> {
+export function extractImportsPaths (ast: Array<AnyType>): Array<string> {
   // also ignore the typeOnly because we only want to know the import paths for now
   const imports = ast
     .filter(filterCallback)
@@ -64,18 +64,32 @@ export function extractImportsTree (
 }
 
 /* when we get the import path then we need to workout the full path to the import file */
-export async function getFullPathToImport (importPath: string): Promise<string> {
-  const _path = resolve(importPath)
+export async function getFullPathToImport (importPath: string, basePath?: string): Promise<string> {
+  const _path = resolve(basePath ? basePath : __dirname, importPath)
   if (fsx.existsSync(_path)) {
     return getFileStat(_path)
   }
-  // is there an extension?
+  // is there an extension? but it didn't exist
   const ext = extname(_path)
-  if (ext) {
-    return Promise.reject(`${_path} not found!`)
+  if (!ext) {
+    // @TODO should we include the other extensions like cjs / mjs / js ?
+    const search = [_path, 'ts'].join('.')
+    if (fsx.existsSync(search)) {
+      return getFileStat(search)
+    }
   }
-  // @TODO should we include the other extensions like cjs / mjs / js ?
-  return getFileStat([_path, 'ts'].join('.'))
+  // This could be a node_modules, we fail it here and let the next method to deal with it
+  return Promise.reject(`${_path} not found!`)
+}
+
+/** check the node_module to see if the import existed there */
+function isNodeModule (importPath: string): boolean {
+  // @NOTE we use the process.cwd() as the root
+  // but this could be wrong
+  const root = process.cwd()
+  const nodeModulePath = join(root, 'node_modules')
+
+  return fsx.existsSync(join(nodeModulePath, importPath))
 }
 
 /** The actual method to get the file path */
@@ -107,7 +121,7 @@ async function getFileStat (importPath: string): Promise<string> {
 function extractBody (ast: AnyType) {
   if (ast.body) {
     return ast.body
-  } 
+  }
   // What if they have this import export only but there should be a body
   throw new Error(`There is no body field in the ast!`)
 }
