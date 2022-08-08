@@ -2,8 +2,31 @@
 // calls and parameters and how they related to each other for Reverse Engineers
 import type { AnyType } from '@jsonql/ast/index'
 import { swcParserSync } from '@jsonql/ast/dist/parsers'
+import { isEmptyObj } from '@jsonql/utils/dist/empty'
 import fsx from 'fs-extra'
 import { resolve, join, extname } from 'node:path'
+
+/* take this to types.d.ts later */
+type SpanNode = {
+  start: number
+  end: number
+  ctxt: number
+}
+
+type SpecifierLocalNode = {
+  type: string
+  span: SpanNode
+  value: string
+  optional: boolean
+}
+
+type SpecifiersNode = {
+  type: string
+  span: SpanNode,
+  local: SpecifierLocalNode
+  imported?: AnyType
+  isTypeOnly: boolean
+}
 
 /* the main call to the swc */
 export function tracer (pathToFile: string, options = {}) {
@@ -12,14 +35,55 @@ export function tracer (pathToFile: string, options = {}) {
   return extractBody(ast)
 }
 
-/* the real mean here we need to trace the import and go to the next file */
-export function extractImportsTree (ast: Array<AnyType>, store = {}): Array<AnyType> | boolean {
-  const imports = ast.filter((a: AnyType) => a.type === 'ImportDeclaration')
-  if (imports.length > 0) {
-    
-  }
+/** for filter out the import and not include the types */
+function filterCallback (a: AnyType) {
+  return a.type === 'ImportDeclaration' && a.typeOnly === false
+}
 
-  return false
+/* we don't want duplicated import paths */
+function extractImportsPaths (ast: Array<AnyType>): Array<string> {
+  // also ignore the typeOnly because we only want to know the import paths for now
+  const imports = ast
+    .filter(filterCallback)
+    .map((a: AnyType) => {
+      // the type is always source: 'StringLiteral' anyway until we encounter otherwise
+      return a.source.value
+    })
+
+  return [...new Set(imports)]
+}
+
+/** this will map out what been import from where */
+function extractImportProps (ast: Array<AnyType>) {
+  return ast
+    .filter(filterCallback)
+    .map((a: AnyType) => (
+      {
+        importPath: a.source.value,
+        identifiers: a.specifiers
+          .filter((sn: SpecifiersNode) => sn.isTypeOnly !== false)
+          .map((sn: SpecifiersNode) => sn.local.value)
+      }
+    ))
+}
+
+/* the real mean here we need to trace the import and go to the next file */
+export function extractImportsTree (
+  ast: Array<AnyType>,
+  depth = 0, // id where we are and add result data to store
+  store = {} // store the whole journey
+): object {
+  const imports = extractImportsPaths(ast)
+  const props = extractImportProps(ast)
+
+
+  if (imports.length > 0) {
+
+
+    const pathToImportFile = getFullPathToImport()
+  }
+  // finaly output will be the object map
+  return store
 }
 
 /* when we get the import path then we need to workout the full path to the import file */
