@@ -47,7 +47,7 @@ function extractImportProps (ast: Array<AnyType>) {
 
 /** once we grab all the import paths we try to resolve them with the real path
 and travel to the next */
-export function resolveImportsToPaths (
+export async function resolveImportsToPaths (
   imports: Array<string>,
   basePath?: string // how do we work out the base path?
 ) {
@@ -62,18 +62,22 @@ export function resolveImportsToPaths (
       return processAll(fail.map((f: string) => {
         const nodeModulePath = isNodeModule(f)
         if (nodeModulePath !== false) {
-          return {
+          return Promise.resolve({
             full: nodeModulePath,
             path: f
-          }
+          })
         }
-        return {
+        return Promise.reject({
           notFound: true,
           path: f
-        }
+        })
       }))
       .then((results1) => {
-
+        const [ pass1, fail1 ] = results1
+        return [
+          pass.concat(pass1),
+          fail1
+        ]
       })
     }
 
